@@ -12,12 +12,37 @@ def request_input
   request_input
 end
 
+class Number
+  def add (arg1, arg2)
+    arg1+arg2
+  end
+  def sub (arg1, arg2)
+    arg1-arg2
+  end
+  def multi (arg1, arg2)
+    arg1*arg2
+  end
+  def div (arg1, arg2)
+    result = arg1.to_f/arg2.to_f
+    result.to_i if (result % 1).zero?
+  end
+end
+
 def request_parse(request)
   operator = request.scan(%r(/[*+\/-]/))[0]
-  first_value = request.split(operator)[0].to_f
-  second_value = request.split(operator)[1].to_f
-  result = eval ("#{first_value}#{operator}#{second_value}")
-  result = result.to_i if (result % 1).zero?
+  first_value = request.split(operator)[0]
+  second_value = request.split(operator)[1]
+  number = Number.new
+  case operator
+    when '+'
+      result = number.add(first_value, second_value)
+    when '-'
+      result = number.sub(first_value, second_value)
+    when '*'
+      result = number.multi(first_value, second_value)
+    when '/'
+      result = number.div(first_value, second_value)
+  end
   puts request + "=#{result}"
 end
 
